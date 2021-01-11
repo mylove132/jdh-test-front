@@ -1,7 +1,8 @@
 import { 
     SET_TODO,
     ADD_THEME,
-    SET_THEME 
+    SET_THEME, 
+    SET_THEME_LIST
 } from './actiontypes';
 import { ITodo } from '@/common/types/todolist';
 import { ITheme, THEME_STYLE } from '@/common/types/theme';
@@ -16,5 +17,8 @@ export default {
     },
     [SET_THEME](state: IState, themeStyle: THEME_STYLE): void {
         state.themeStyle = themeStyle;
+    },
+    [SET_THEME_LIST](state: IState, themes: ITheme[]): void {
+        state.themes = themes;
     }
 }

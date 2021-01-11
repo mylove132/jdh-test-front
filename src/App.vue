@@ -2,6 +2,20 @@
   <router-view/>
 </template>
 
+<script lang = 'ts'>
+import { defineComponent, onMounted } from 'vue';
+import { useTheme } from './hooks';
+
+export default defineComponent ({
+  setup () {
+    const { setLocalThemeList } = useTheme();
+    onMounted( () => {
+      setLocalThemeList();
+    })
+  }
+})
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

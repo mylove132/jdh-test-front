@@ -11,7 +11,3 @@ export const store = createStore<IState>({
   mutations,
   actions,
 })
-
-export function useStore() {
-  return store
-}

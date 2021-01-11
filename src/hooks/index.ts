@@ -1,8 +1,9 @@
 import { ITodo, TODO_STATUS } from "@/common/types/todolist";
 import { Store } from 'vuex';
-import { ADD_THEME, SET_THEME, SET_TODO } from '@/store/actiontypes';
-import { useStore } from '@/store';
+import { ADD_THEME, SET_THEME, SET_TODO, SET_THEME_LIST } from '@/store/actiontypes';
+import { store } from '@/store';
 import { ITheme, THEME_STYLE } from "@/common/types/theme";
+import { THEME_LIST } from '@/common/contants';
 
 export interface IUseTodo {
     setTodo: (value: string) => void;
@@ -15,11 +16,15 @@ export interface IUseTodo {
 export interface IUseTheme {
     addTheme: (theme: ITheme) => void;
     setTheme: (themeStyle: THEME_STYLE) => void;
+    setThemeList: () => void;
+    setLocalThemeList: () => void;
 }
 
 export interface IUseLocalStorage {
     getLocalList: () => ITodo[];
     setLocalList: (todoList: ITodo[]) => void;
+    setThemeList: (themes: ITheme[]) => void;
+    getThemeList: () => ITheme[];
 }
 
 /**
@@ -27,7 +32,6 @@ export interface IUseLocalStorage {
  */
 function useTodo(): IUseTodo {
 
-    const store: Store<any> = useStore();
     const { setLocalList }: IUseLocalStorage = userLocalStorage();
 
     function setTodo(content: string): void {
@@ -59,9 +63,12 @@ function useTodo(): IUseTodo {
 
 function useTheme(): IUseTheme {
 
-    const store: Store<any> = useStore();
 
+    const { getThemeList } : IUseLocalStorage = userLocalStorage();
+    const themes: ITheme[] = getThemeList();
+    
     const addTheme = (theme: ITheme): void => {
+        const { setThemeList }: IUseLocalStorage = userLocalStorage();
         store.dispatch(ADD_THEME, theme);
     }
 
@@ -69,9 +76,20 @@ function useTheme(): IUseTheme {
         store.dispatch(SET_THEME, themeStyle);
     }
 
+    const setThemeList = (): void => {
+        store.dispatch(SET_THEME_LIST, store.state.themes);
+    }
+
+    const setLocalThemeList = (): void => {
+        store.dispatch(SET_THEME_LIST, themes);
+    }
+
+
     return {
         addTheme,
-        setTheme
+        setTheme,
+        setThemeList,
+        setLocalThemeList
     }
 }
 
@@ -88,9 +106,19 @@ function userLocalStorage(): IUseLocalStorage {
         localStorage.setItem("todoList", JSON.stringify(todoList));
     }
 
+    function setThemeList(themes: ITheme[]): void {
+        localStorage.setItem(THEME_LIST, JSON.stringify(themes));
+    }
+
+    function getThemeList(): ITheme[] {
+        return JSON.parse(localStorage.getItem(THEME_LIST) || "[]");
+    }
+
     return {
         getLocalList,
-        setLocalList
+        setLocalList,
+        setThemeList,
+        getThemeList
     }
 }
 
