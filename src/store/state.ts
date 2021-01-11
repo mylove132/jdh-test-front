@@ -1,5 +1,8 @@
-import { IState } from '@/common/types/todolist';
+import { IState } from "@/common/types/common";
+import { THEME_STYLE } from "@/common/types/theme";
 
 export default <IState> {
-    list: []
+    list: [],
+    themes: [],
+    themeStyle: THEME_STYLE.DEFAULT
 }

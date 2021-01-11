@@ -4,10 +4,6 @@ interface ITodo {
     status: TODO_STATUS;
 }
 
-interface IState {
-    list: ITodo[];
-}
-
 enum TODO_STATUS {
     WILLDO = "willdo",
     FINISHED = "finished",
@@ -17,6 +13,5 @@ enum TODO_STATUS {
 
 export {
     ITodo,
-    IState,
     TODO_STATUS
 }
