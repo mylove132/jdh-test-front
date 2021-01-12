@@ -17,5 +17,12 @@
     @if $direction == "down" {
         border-radius: $radius 0 0 $radius;    
     }
-     
+}
+
+/**
+* 设置系统主题
+*/
+@mixin setSystemTheme ($b-color, $color) {
+    background-color: $b-color;
+    color: $color;
 }

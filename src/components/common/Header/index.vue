@@ -3,28 +3,34 @@
     <div class="theme">
       <input type="text" placeholder="请输入样式名称" v-model="themeName" @keyup="addThemeStyle" />
       <li v-for="theme of themes" :key="theme.id">
-          <span> {{ theme.name }} </span>
+        {{ theme.name }}
+        <ThemeStyleButton v-bind:themeStyle="themeData"></ThemeStyleButton>
       </li>
     </div>
   </div>
 </template>
 
 <script lang = 'ts'>
-import { defineComponent, ref, watch, onMounted, computed } from "vue";
+import { defineComponent, ref, reactive, watch, onMounted, computed } from "vue";
 import { ITheme, THEME_STYLE } from "@/common/types/theme";
 import { store } from "@/store";
 import { SET_THEME } from "@/store/actiontypes";
 import { useTheme, IUseTheme } from "@/hooks/index";
-import state from '../../../store/state';
-
+import state from '@/store/state';
+import ThemeStyleButton from "@/components/common/ThemeStyleButton/index.vue";
+import { IThemeStyle } from "@/common/types/common";
 export default defineComponent({
   name: "Header",
+  components : {
+    ThemeStyleButton
+  },
   setup() {
-    const { addTheme, setThemeList }: IUseTheme = useTheme();
+    const { addTheme, setThemeList, getThemeStyle }: IUseTheme = useTheme();
     const themeName = ref<string>("");
+    const themeStyle = ref<THEME_STYLE>(THEME_STYLE.DEFAULT);
+    const themeData = reactive<IThemeStyle>(getThemeStyle(themeStyle.value));
 
     const switchTheme = (theme: ITheme): void => {
-        console.log(theme)
       store.dispatch(SET_THEME, theme);
     };
 
@@ -42,19 +48,19 @@ export default defineComponent({
 
     watch(
       () => {
-        console.log("000000000--->"+JSON.stringify(store.state.themes));
         return store.state.themes;
       },
       (themes: ITheme[]) => {
-        setThemeList();
+        setThemeList(themes);
       }
     );
 
     return {
-      themes: computed( () => {console.log(store.state.themes); return store.state.themes}),
+      themes: computed( () => {return store.state.themes}),
       themeName,
       switchTheme,
-      addThemeStyle
+      addThemeStyle,
+      themeStyle
     };
   }
 });
@@ -63,13 +69,11 @@ export default defineComponent({
 <style lang='scss' scoped>
 .header {
   width: 100%;
-  height: 100px;
-  background-color: #fcfc;
+  height: 500px;
   .theme {
-    width: 200px;
+    width: 500px;
     height: 100px;
     float: right;
-    background-color: aqua;
   }
 }
 </style>

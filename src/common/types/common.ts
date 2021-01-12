@@ -1,3 +1,4 @@
+import { Color } from "../contants";
 import { ITheme, THEME_STYLE } from "./theme";
 import { ITodo } from "./todolist";
 
@@ -7,13 +8,13 @@ interface IState {
     themeStyle: THEME_STYLE;
 }
 
-interface IThemeStyleButton {
-    backgroundColor: string;
-    color: string;
+interface IThemeStyle {
+    backgroundColor: Color;
+    color: Color;
     text: string;
 }
 
 export {
     IState,
-    IThemeStyleButton
+    IThemeStyle
 }

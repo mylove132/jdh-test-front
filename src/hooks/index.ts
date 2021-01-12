@@ -3,7 +3,9 @@ import { Store } from 'vuex';
 import { ADD_THEME, SET_THEME, SET_TODO, SET_THEME_LIST } from '@/store/actiontypes';
 import { store } from '@/store';
 import { ITheme, THEME_STYLE } from "@/common/types/theme";
-import { THEME_LIST } from '@/common/contants';
+import { Color, SET_THEME_STYLE, THEME_LIST } from '@/common/contants';
+import { IThemeStyle } from "@/common/types/common";
+import { reactive } from "vue";
 
 export interface IUseTodo {
     setTodo: (value: string) => void;
@@ -16,8 +18,8 @@ export interface IUseTodo {
 export interface IUseTheme {
     addTheme: (theme: ITheme) => void;
     setTheme: (themeStyle: THEME_STYLE) => void;
-    setThemeList: () => void;
-    setLocalThemeList: () => void;
+    setThemeList: (themes: ITheme[]) => void;
+    getThemeStyle: (themeStyle: THEME_STYLE) => IThemeStyle;
 }
 
 export interface IUseLocalStorage {
@@ -65,31 +67,57 @@ function useTheme(): IUseTheme {
 
 
     const { getThemeList } : IUseLocalStorage = userLocalStorage();
-    const themes: ITheme[] = getThemeList();
-    
+   
     const addTheme = (theme: ITheme): void => {
         const { setThemeList }: IUseLocalStorage = userLocalStorage();
         store.dispatch(ADD_THEME, theme);
+        setThemeList(store.state.themes);
     }
 
     const setTheme = (themeStyle: THEME_STYLE): void => {
         store.dispatch(SET_THEME, themeStyle);
     }
 
-    const setThemeList = (): void => {
-        store.dispatch(SET_THEME_LIST, store.state.themes);
-    }
-
-    const setLocalThemeList = (): void => {
+    const setThemeList = (themes: ITheme[]): void => {
         store.dispatch(SET_THEME_LIST, themes);
     }
 
+    const getThemeStyle = (themeStyle: THEME_STYLE): IThemeStyle => {
+        let tStyle = reactive<IThemeStyle>({
+            backgroundColor: Color.WHITE,
+            color: Color.BLACK,
+            text: "黑白主题"
+        });
+        switch (themeStyle) {
+            case THEME_STYLE.RED:
+                tStyle.backgroundColor = Color.RED;
+                tStyle.color = Color.WHITE;
+                tStyle.text = "红色主题";
+                break;
+            case THEME_STYLE.DEFAULT:
+                tStyle.backgroundColor = Color.WHITE;
+                tStyle.color = Color.BLACK;
+                tStyle.text = "默认主题";
+                break;
+            case THEME_STYLE.GREEN:
+                tStyle.backgroundColor = Color.GREEN;
+                tStyle.color = Color.WHITE;
+                tStyle.text = "绿色主题";
+                break;
+            case THEME_STYLE.YELLOW:
+                tStyle.backgroundColor = Color.YELLOW;
+                tStyle.color = Color.WHITE;
+                tStyle.text = "黄色主题";
+                break;   
+        }
+        return tStyle;
+    }
 
     return {
         addTheme,
         setTheme,
         setThemeList,
-        setLocalThemeList
+        getThemeStyle
     }
 }
 
@@ -104,6 +132,10 @@ function userLocalStorage(): IUseLocalStorage {
 
     function setLocalList(todoList: ITodo[]): void {
         localStorage.setItem("todoList", JSON.stringify(todoList));
+    }
+
+    function setThemeStyle(themeStyle: THEME_STYLE): void {
+        localStorage.setItem(SET_THEME_STYLE, themeStyle);
     }
 
     function setThemeList(themes: ITheme[]): void {

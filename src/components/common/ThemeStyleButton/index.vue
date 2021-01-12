@@ -1,24 +1,41 @@
 <template>
   <div class="theme-style">
-    <div class="theme-style-background"></div>
-    <div class="theme-style-color"></div>
+    <div class="semicircle-left"></div>
+    <div class="semicircle-right"></div>
   </div>
 </template>
 
 <script lang = 'ts'>
-import { defineComponent, ref } from "vue";
+import { IThemeStyle } from "@/common/types/common";
+import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
   name: "ThemeStyleButton",
-  setup() {
-      const bColor = ref<string>('');
-  }
+  props: {
+    themeStyle: {
+      type: Object,
+      default: () => {
+      }
+    }
+  },
+  setup(props) {
+    const bColor = ref<string>("");
+    onMounted (() => {
+    })
+  },
 });
 </script>
 
 <style lang = 'scss' scoped>
-.theme-style-background {
-    @include semicircle(10px, )
+.theme-style {
+  height: 150px;
+  width: 250px;
+  background-color: bisque;
+  .semicircle-left {
+    @include semicircle(50px, red, #fff, "left");
+  }
+  .semicircle-right {
+    @include semicircle(50px, red, #fff, "right");
+  }
 }
-
 </style>

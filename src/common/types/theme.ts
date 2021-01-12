@@ -7,7 +7,8 @@ interface ITheme {
 enum THEME_STYLE {
     DEFAULT = "DEFAULT",
     RED = "RED",
-    GREEN = "GREEN"
+    GREEN = "GREEN",
+    YELLOW = "YELLOW",
 }
 
 export {
