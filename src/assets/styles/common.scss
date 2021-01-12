@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+@mixin semicircle ($radius, $b-color, $t-color, $direction: "left") {
+    width: 10px;
+    height: 20px;
+    background-color: $b-color;
+    color: $t-color;
+    @if $direction == "left" {
+        border-radius: $radius 0 0 $radius;    
+    }
+    @if $direction == "right" {
+        border-radius: 0 $radius $radius 0;    
+    }
+    @if $direction == "up" {
+        border-radius: $radius 0 0 $radius;    
+    }
+    @if $direction == "down" {
+        border-radius: $radius 0 0 $radius;    
+    }
+     
+}

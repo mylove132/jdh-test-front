@@ -7,6 +7,13 @@ interface IState {
     themeStyle: THEME_STYLE;
 }
 
+interface IThemeStyleButton {
+    backgroundColor: string;
+    color: string;
+    text: string;
+}
+
 export {
-    IState
+    IState,
+    IThemeStyleButton
 }
