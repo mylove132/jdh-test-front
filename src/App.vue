@@ -38,8 +38,6 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-#app {
-  @include setSystemTheme(yellow, black);
-}
+<style lang="less">
+
 </style>

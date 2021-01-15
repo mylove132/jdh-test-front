@@ -1,12 +1,35 @@
 <template>
-  <div class="header">
-    <div class="theme">
-      <input type="text" placeholder="请输入样式名称" v-model="themeName" @keyup="addThemeStyle" />
-      <li v-for="theme of themes" :key="theme.id">
-        {{ theme.name }}
-        <ThemeStyleButton v-bind:themeStyle="themeData"></ThemeStyleButton>
-      </li>
-    </div>
+   <div>
+    <a-menu v-model="current" mode="horizontal">
+      <a-menu-item key="mail"> <a-icon type="mail" />Navigation One </a-menu-item>
+      <a-menu-item key="app" disabled> <a-icon type="appstore" />Navigation Two </a-menu-item>
+      <a-sub-menu>
+        <span slot="title" class="submenu-title-wrapper"
+          ><a-icon type="setting" />Navigation Three - Submenu</span
+        >
+        <a-menu-item-group title="Item 1">
+          <a-menu-item key="setting:1">
+            Option 1
+          </a-menu-item>
+          <a-menu-item key="setting:2">
+            Option 2
+          </a-menu-item>
+        </a-menu-item-group>
+        <a-menu-item-group title="Item 2">
+          <a-menu-item key="setting:3">
+            Option 3
+          </a-menu-item>
+          <a-menu-item key="setting:4">
+            Option 4
+          </a-menu-item>
+        </a-menu-item-group>
+      </a-sub-menu>
+      <a-menu-item key="alipay">
+        <a href="https://antdv.com" target="_blank" rel="noopener noreferrer"
+          >Navigation Four - Link</a
+        >
+      </a-menu-item>
+    </a-menu>
   </div>
 </template>
 
@@ -15,16 +38,18 @@ import { defineComponent, ref, reactive, watch, onMounted, computed } from "vue"
 import { ITheme, THEME_STYLE } from "@/common/types/theme";
 import { store } from "@/store";
 import { SET_THEME } from "@/store/actiontypes";
-import { useTheme, IUseTheme } from "@/hooks/index";
+import { useTheme } from "@/hooks/index";
 import state from '@/store/state';
-import ThemeStyleButton from "@/components/common/ThemeStyleButton/index.vue";
 import { IThemeStyle } from "@/common/types/common";
+import { IUseTheme } from "@/hooks/useTheme";
 export default defineComponent({
   name: "Header",
   components : {
-    ThemeStyleButton
+    
   },
   setup() {
+
+    const current: string[] = ['mail'];
     const { addTheme, setThemeList, getThemeStyle }: IUseTheme = useTheme();
     const themeName = ref<string>("");
     const themeStyle = ref<THEME_STYLE>(THEME_STYLE.DEFAULT);
@@ -54,26 +79,18 @@ export default defineComponent({
         setThemeList(themes);
       }
     );
-
     return {
       themes: computed( () => {return store.state.themes}),
       themeName,
       switchTheme,
       addThemeStyle,
-      themeStyle
+      themeStyle,
+      current
     };
   }
 });
 </script>
 
-<style lang='scss' scoped>
-.header {
-  width: 100%;
-  height: 500px;
-  .theme {
-    width: 500px;
-    height: 100px;
-    float: right;
-  }
-}
+<style lang='less' scoped>
+
 </style>
